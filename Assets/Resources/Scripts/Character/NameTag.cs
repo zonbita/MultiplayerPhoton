@@ -10,30 +10,27 @@ public class NameTag : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text nameText;
 
+    PhotonView pv;
+    private void Awake()
+    {
+        pv = GetComponentInParent<PhotonView>();
+    }
     void Start()
     {
-        if (photonView.IsMine)
+        if (pv.IsMine)
         {
-            photonView.RPC("SetName", RpcTarget.All, PhotonNetwork.NickName);
+            pv.RPC("RPC_SetName", RpcTarget.All, PhotonNetwork.NickName);
+            nameText.text = PhotonNetwork.NickName;
         }
         else
         {
-            SetName(photonView.Owner.NickName);
+            nameText.text = pv.Owner.NickName;
         }
+    
     }
-
-    void Update()
-    {
-        if (target != null)
-        {
-            Vector3 lookAtVec = transform.position + (transform.position - target.position);
-            transform.LookAt(lookAtVec, Vector3.up);
-        }
-    }
-
 
     [PunRPC]
-    void SetName(string name)
+    public void RPC_SetName(string name)
     {
         nameText.text = name;
     }

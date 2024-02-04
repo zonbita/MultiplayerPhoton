@@ -14,7 +14,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         public void OnCollisionEnter(Collision collision)
         {
-            Destroy(gameObject);
+           // Destroy(gameObject);
         }
 
         public void InitializeBullet(Player owner, Vector3 originalDirection, float lag)

@@ -1,27 +1,30 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
-    //PhotonView view;
-    public float Health = 1f;
+    GameObject PC;
 
     private void Awake()
     {
-        if (photonView.IsMine)
+    }
+
+    private void Start()
+    {
+        if (this.photonView.IsMine)
         {
+            AudioManager.Instance.PlayBgm(true);
             CreatePlayer();
         }
     }
 
-
     void CreatePlayer()
     {
-        
-        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerController"), Vector3.zero, Quaternion.identity);
+        StartCoroutine(RespawnCoroutine(2));
     }
 
 
@@ -36,5 +39,17 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
 
-    
+    IEnumerator RespawnCoroutine(float spawnTime)
+    {
+        yield return new WaitForSeconds(spawnTime);
+        Transform t = SpawnerManager.Instance.GetSpawnPoint();
+        PC = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerController"), t.position, t.rotation, 0, new object[] { this.photonView.ViewID});
+        PC.GetComponent<PlayerController>().playerManager = this;
+    }
+
+    public void Die()
+    {
+        PhotonNetwork.Destroy(PC);
+        CreatePlayer();
+    }
 }

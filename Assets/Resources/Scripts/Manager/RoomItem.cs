@@ -7,7 +7,7 @@ public class RoomItem : MonoBehaviour, IPointerClickHandler
     RoomInfo roomInfo;
     public void OnPointerClick(PointerEventData eventData)
     {
-        NetworkManager.Instance.JoinRoom(roomInfo);
+        NetworkManager.Instance.JoinRoomClick(roomInfo);
     }
 
     public void Setup(RoomInfo roomInfo)

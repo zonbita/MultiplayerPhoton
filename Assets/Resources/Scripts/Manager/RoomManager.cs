@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine;
 
+
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     private void Awake()
@@ -23,15 +24,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerManagers"), new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
-        
+        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerManagers"), Vector3.zero, Quaternion.identity, 0);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         if(scene.buildIndex == 1)
         {
-            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerManagers"), new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerManagers"), Vector3.zero, Quaternion.identity, 0);
+            
         }
     }
+
 }
